@@ -94,7 +94,7 @@ return sum; //return statement
 
 
 
-** Selasa, 27 September 2022
+**Selasa, 27 September 2022**
 ### Tipe Data
 
 #### Tipe Data
