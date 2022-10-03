@@ -282,3 +282,132 @@ Alasan untuk ini adalah karena Non-Primitif (Objek) disimpan dengan referensi. P
 
 KESIMPULAN : 
 Tipe data primitif disimpan berdasarkan nilai. Tipe data non-primitif disimpan dengan referensi. Saat mendeklarasikan variabel, Anda biasanya membuat alamat baru yang potensial.
+
+
+
+
+
+
+
+
+
+
+**Rabu-Jumat, 28-30 September 2022**
+### Javascript dan HTML DOM
+###### Memanipulasi Tampilan Web Menggunakan Bahasa Pemrograman
+
+
+#### Proses Rendering di balik layar
+- HTML -> Parsing -> Tokens -> DOM
+- CSS -> Parsing -> Tokens -> CSSOM
+- DOM + CSSOM = Render Tree
+- Layouting
+
+1. File HTML -> Tokens -> Tree
+	Main : 
+	- h1
+	- span
+	- article
+	- h2 dan p
+
+2. File CSS -> Tokens -> Tree
+Main style - div style - div style
+
+3. Layouting - Render Tree -> Tampilan Web
+	Main Element :
+	- h1 element
+	- span element
+	- article element
+	h2 element dan p element
+
+
+
+- **Isu terkait proses rendering** : 
+Jika saat proses parsing HTML, ditemukan tag <script>, secara default proses parsing akan dihentikan sampai script 	tersebut selesai diunduh dan dijalan
+
+- Solusi dari isu terkait proses rendering
+1. Taruh tag <script> eksternal sebelum tag penutup <body> 
+2. Taruh tag <script> sedini mungkin dan gunakan atribut async. Atribut async akan membuat script tersebut diunduh tanpa menghentikan proses parsing dan dieksekusi seselesainya dia diunduh
+3. Untuk script yang bergantung pada DOM, taruh tag <script> sedini mungkin, dan gunakan atribut defer yang akan membuat script tersebut diunduh tanpa menghentikan proses parsing dan dieksekusi seselesainya proses parsing
+
+- Mencari Element HMTL
+1. Mencari 1 element dengan id tertentu
+`document.getElementById(“header”)`
+2. Mencari beberapa element sekaligus dengan class tertentu
+`document.getElementByClassName(“container”)`
+3. Mencari element menggunakan kombinasi selector (seperti di CSS)
+`document.querySelector(“#header p span”)`
+
+- Mengubah konten element
+1. Element.textContent dapat digunakan untuk mengubah teks didalam sebuah element
+`ex : Element.textContent = “<span>Teks Heading</span”`
+2. Element.innerHTML dapat digunakan untuk mengubah konten HTML didalam sebuah element
+`ex : Element.innerHTML = “<span> Teks Heading</span”`
+
+- Membuat Element HTML
+`.createElement() -> .textContent untuk mengubah konten -> .appendChild() untuk menambahkan ke DOM`
+
+
+#### Interaksi User (Event)
+User experience itu bersifat dua arah, selain menampilkan element HTML, halaman web juga harus bisa menangkap interaksi user
+
+1. HTML DOM Event
+- Focus
+- Change
+- Click
+- Hover
+- Blur
+- Scroll
+- Submit
+
+2. Menangkap Interaksi User
+- Element.addEventListener(“event”)
+- Element.onevent
+
+
+
+
+1. EventListener
+Dengan cara `Element.addEventListener(“event”)`
+- Bisa dihilangkan
+- Bisa ada beberapa event listener yang sama untuk 1 element
+- Memiliki argument tambahan (options)
+
+2. EventListener - Click
+Element <input id=”user-input” /> dan <button id=”alert-button”>show</button>. Kita ingin menampilkan pop up box yang berisi teks didalam input tadi
+//cari dulu kedua element tersebut berdasarkan idnya
+`const.input = document.getElementById(“user-input”)`
+`const.button = document.getElementById(“alert-button”)`
+//baru tambahkan event listener
+`button.addEventListener(“click”.function(){`
+`alert(input.value)`
+})
+//atau
+`button.onclick = function() {alert(input.value)}`
+
+3. EventListener - Blur
+Event yang dimana sebuah element kehilangan focus dari user(misal user klik mouse diluar element tersebut atau user klik tab untuk berpindah element)
+
+Kita ingin memvalidasi isi dari <input.id=”username”/> agar panjangnya minimal 6 karakter
+//cari dul element tersebut berdasarkan idnya
+`const input = document.getElementById(“username”)`
+//tambahkan event listener
+`input.addEventListener(“blur”.() => {`
+`if(input.value.length < 6) alert(“Panjang username minimal 6”)`
+`})`
+
+4. EventListener - Form Submission
+Mempunyai element beberapa input dalam sebuah form <input name=”email/> dan <input type=”password”/>.
+Bagaimana caranya untuk mendapatkan isi dari kedua input tersebut saat submit form?
+Pasang event listener di kedua input dan tombol submit, lalu saat tombol di klik, baca value dari kedua input tersebut
+Pasang event listener di form, lalu gunakan FormData untuk mengambil data dari masing-masing input
+
+	`const form = document.getElementById(“form”)`
+	`form.addEventListener(“submit”, function(event){`
+	//cegah page refresh
+	`event.preventDefault()`
+	
+	`const formData = new FormData(form)`
+	`const values = Object.fromEntries(formData)`
+	`})`
+
